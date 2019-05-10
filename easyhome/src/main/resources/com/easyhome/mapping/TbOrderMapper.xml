@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.TbOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.easyhome.po.TbOrder" >
+    <result column="FID" property="fid" jdbcType="VARCHAR" />
+    <result column="ORDER_SN" property="orderSn" jdbcType="DECIMAL" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="STORE_ID" property="storeId" jdbcType="DECIMAL" />
+    <result column="STORE_NAME" property="storeName" jdbcType="VARCHAR" />
+    <result column="WAREHOUSE_ID" property="warehouseId" jdbcType="DECIMAL" />
+    <result column="WAREHOUSE_NAME" property="warehouseName" jdbcType="VARCHAR" />
+    <result column="OUT_ORDER_SN" property="outOrderSn" jdbcType="VARCHAR" />
+    <result column="CHECKSTATUS" property="checkstatus" jdbcType="DECIMAL" />
+    <result column="OUT_STATUS" property="outStatus" jdbcType="VARCHAR" />
+    <result column="DD_DATE" property="ddDate" jdbcType="DATE" />
+    <result column="SH_DATE" property="shDate" jdbcType="DATE" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="MEMBER_CODE" property="memberCode" jdbcType="VARCHAR" />
+    <result column="SHIP_NAME" property="shipName" jdbcType="VARCHAR" />
+    <result column="SHIP_MOBILE" property="shipMobile" jdbcType="VARCHAR" />
+    <result column="SHIP_ADDRESS" property="shipAddress" jdbcType="VARCHAR" />
+    <result column="TOTAL_PRODUCT_PRICE" property="totalProductPrice" jdbcType="DECIMAL" />
+    <result column="OUT_CREATE_DATE" property="outCreateDate" jdbcType="DATE" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="LRJDEDATE" property="lrjdedate" jdbcType="DATE" />
+    <result column="CK_DATE" property="ckDate" jdbcType="DATE" />
+    <result column="STORES_INVOICE_ID" property="storesInvoiceId" jdbcType="DECIMAL" />
+    <result column="STORES_INVOICE_NAME" property="storesInvoiceName" jdbcType="VARCHAR" />
+    <result column="STORES_WORKER_NAME" property="storesWorkerName" jdbcType="VARCHAR" />
+    <result column="NEED_INSTALL" property="needInstall" jdbcType="VARCHAR" />
+    <result column="DISPATCH_MEMO" property="dispatchMemo" jdbcType="VARCHAR" />
+    <result column="DISPATCH_SN" property="dispatchSn" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="MEMO2" property="memo2" jdbcType="VARCHAR" />
+    <result column="INVOICE_INFO" property="invoiceInfo" jdbcType="VARCHAR" />
+    <result column="WORK_ORDER_ID" property="workOrderId" jdbcType="VARCHAR" />
+    <result column="PUSH_TIME" property="pushTime" jdbcType="DATE" />
+    <result column="DELETE_FLAG" property="deleteFlag" jdbcType="DECIMAL" />
+    <result column="WORK_ORDER_TIME" property="workOrderTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    FID, ORDER_SN, ORDER_TYPE, ORG_ID, STORE_ID, STORE_NAME, WAREHOUSE_ID, WAREHOUSE_NAME, 
+    OUT_ORDER_SN, CHECKSTATUS, OUT_STATUS, DD_DATE, SH_DATE, MEMBER_ID, MEMBER_CODE, 
+    SHIP_NAME, SHIP_MOBILE, SHIP_ADDRESS, TOTAL_PRODUCT_PRICE, OUT_CREATE_DATE, CREATE_DATE, 
+    LRJDEDATE, CK_DATE, STORES_INVOICE_ID, STORES_INVOICE_NAME, STORES_WORKER_NAME, NEED_INSTALL, 
+    DISPATCH_MEMO, DISPATCH_SN, MEMO, MEMO2, INVOICE_INFO, WORK_ORDER_ID, PUSH_TIME, 
+    DELETE_FLAG, WORK_ORDER_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.easyhome.po.TbOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from TB_ORDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.easyhome.po.TbOrderExample" >
+    delete from TB_ORDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.easyhome.po.TbOrder" >
+    insert into TB_ORDER (FID, ORDER_SN, ORDER_TYPE, 
+      ORG_ID, STORE_ID, STORE_NAME, 
+      WAREHOUSE_ID, WAREHOUSE_NAME, OUT_ORDER_SN, 
+      CHECKSTATUS, OUT_STATUS, DD_DATE, 
+      SH_DATE, MEMBER_ID, MEMBER_CODE, 
+      SHIP_NAME, SHIP_MOBILE, SHIP_ADDRESS, 
+      TOTAL_PRODUCT_PRICE, OUT_CREATE_DATE, CREATE_DATE, 
+      LRJDEDATE, CK_DATE, STORES_INVOICE_ID, 
+      STORES_INVOICE_NAME, STORES_WORKER_NAME, NEED_INSTALL, 
+      DISPATCH_MEMO, DISPATCH_SN, MEMO, 
+      MEMO2, INVOICE_INFO, WORK_ORDER_ID, 
+      PUSH_TIME, DELETE_FLAG, WORK_ORDER_TIME
+      )
+    values (#{fid,jdbcType=VARCHAR}, #{orderSn,jdbcType=DECIMAL}, #{orderType,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=DECIMAL}, #{storeId,jdbcType=DECIMAL}, #{storeName,jdbcType=VARCHAR}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{warehouseName,jdbcType=VARCHAR}, #{outOrderSn,jdbcType=VARCHAR}, 
+      #{checkstatus,jdbcType=DECIMAL}, #{outStatus,jdbcType=VARCHAR}, #{ddDate,jdbcType=DATE}, 
+      #{shDate,jdbcType=DATE}, #{memberId,jdbcType=VARCHAR}, #{memberCode,jdbcType=VARCHAR}, 
+      #{shipName,jdbcType=VARCHAR}, #{shipMobile,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, 
+      #{totalProductPrice,jdbcType=DECIMAL}, #{outCreateDate,jdbcType=DATE}, #{createDate,jdbcType=DATE}, 
+      #{lrjdedate,jdbcType=DATE}, #{ckDate,jdbcType=DATE}, #{storesInvoiceId,jdbcType=DECIMAL}, 
+      #{storesInvoiceName,jdbcType=VARCHAR}, #{storesWorkerName,jdbcType=VARCHAR}, #{needInstall,jdbcType=VARCHAR}, 
+      #{dispatchMemo,jdbcType=VARCHAR}, #{dispatchSn,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{memo2,jdbcType=VARCHAR}, #{invoiceInfo,jdbcType=VARCHAR}, #{workOrderId,jdbcType=VARCHAR}, 
+      #{pushTime,jdbcType=DATE}, #{deleteFlag,jdbcType=DECIMAL}, #{workOrderTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.easyhome.po.TbOrder" >
+    insert into TB_ORDER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        FID,
+      </if>
+      <if test="orderSn != null" >
+        ORDER_SN,
+      </if>
+      <if test="orderType != null" >
+        ORDER_TYPE,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="storeId != null" >
+        STORE_ID,
+      </if>
+      <if test="storeName != null" >
+        STORE_NAME,
+      </if>
+      <if test="warehouseId != null" >
+        WAREHOUSE_ID,
+      </if>
+      <if test="warehouseName != null" >
+        WAREHOUSE_NAME,
+      </if>
+      <if test="outOrderSn != null" >
+        OUT_ORDER_SN,
+      </if>
+      <if test="checkstatus != null" >
+        CHECKSTATUS,
+      </if>
+      <if test="outStatus != null" >
+        OUT_STATUS,
+      </if>
+      <if test="ddDate != null" >
+        DD_DATE,
+      </if>
+      <if test="shDate != null" >
+        SH_DATE,
+      </if>
+      <if test="memberId != null" >
+        MEMBER_ID,
+      </if>
+      <if test="memberCode != null" >
+        MEMBER_CODE,
+      </if>
+      <if test="shipName != null" >
+        SHIP_NAME,
+      </if>
+      <if test="shipMobile != null" >
+        SHIP_MOBILE,
+      </if>
+      <if test="shipAddress != null" >
+        SHIP_ADDRESS,
+      </if>
+      <if test="totalProductPrice != null" >
+        TOTAL_PRODUCT_PRICE,
+      </if>
+      <if test="outCreateDate != null" >
+        OUT_CREATE_DATE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="lrjdedate != null" >
+        LRJDEDATE,
+      </if>
+      <if test="ckDate != null" >
+        CK_DATE,
+      </if>
+      <if test="storesInvoiceId != null" >
+        STORES_INVOICE_ID,
+      </if>
+      <if test="storesInvoiceName != null" >
+        STORES_INVOICE_NAME,
+      </if>
+      <if test="storesWorkerName != null" >
+        STORES_WORKER_NAME,
+      </if>
+      <if test="needInstall != null" >
+        NEED_INSTALL,
+      </if>
+      <if test="dispatchMemo != null" >
+        DISPATCH_MEMO,
+      </if>
+      <if test="dispatchSn != null" >
+        DISPATCH_SN,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+      <if test="memo2 != null" >
+        MEMO2,
+      </if>
+      <if test="invoiceInfo != null" >
+        INVOICE_INFO,
+      </if>
+      <if test="workOrderId != null" >
+        WORK_ORDER_ID,
+      </if>
+      <if test="pushTime != null" >
+        PUSH_TIME,
+      </if>
+      <if test="deleteFlag != null" >
+        DELETE_FLAG,
+      </if>
+      <if test="workOrderTime != null" >
+        WORK_ORDER_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=DECIMAL},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=DECIMAL},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null" >
+        #{warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="warehouseName != null" >
+        #{warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="outOrderSn != null" >
+        #{outOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="checkstatus != null" >
+        #{checkstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="outStatus != null" >
+        #{outStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDate != null" >
+        #{ddDate,jdbcType=DATE},
+      </if>
+      <if test="shDate != null" >
+        #{shDate,jdbcType=DATE},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberCode != null" >
+        #{memberCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shipName != null" >
+        #{shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="shipMobile != null" >
+        #{shipMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddress != null" >
+        #{shipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="totalProductPrice != null" >
+        #{totalProductPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="outCreateDate != null" >
+        #{outCreateDate,jdbcType=DATE},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="lrjdedate != null" >
+        #{lrjdedate,jdbcType=DATE},
+      </if>
+      <if test="ckDate != null" >
+        #{ckDate,jdbcType=DATE},
+      </if>
+      <if test="storesInvoiceId != null" >
+        #{storesInvoiceId,jdbcType=DECIMAL},
+      </if>
+      <if test="storesInvoiceName != null" >
+        #{storesInvoiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="storesWorkerName != null" >
+        #{storesWorkerName,jdbcType=VARCHAR},
+      </if>
+      <if test="needInstall != null" >
+        #{needInstall,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchMemo != null" >
+        #{dispatchMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchSn != null" >
+        #{dispatchSn,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="memo2 != null" >
+        #{memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceInfo != null" >
+        #{invoiceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="workOrderId != null" >
+        #{workOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="pushTime != null" >
+        #{pushTime},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="workOrderTime != null" >
+        #{workOrderTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.easyhome.po.TbOrderExample" resultType="java.lang.Integer" >
+    select count(*) from TB_ORDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update TB_ORDER
+    <set >
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderSn != null" >
+        ORDER_SN = #{record.orderSn,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderType != null" >
+        ORDER_TYPE = #{record.orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.storeId != null" >
+        STORE_ID = #{record.storeId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.storeName != null" >
+        STORE_NAME = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.warehouseId != null" >
+        WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warehouseName != null" >
+        WAREHOUSE_NAME = #{record.warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outOrderSn != null" >
+        OUT_ORDER_SN = #{record.outOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkstatus != null" >
+        CHECKSTATUS = #{record.checkstatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outStatus != null" >
+        OUT_STATUS = #{record.outStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ddDate != null" >
+        DD_DATE = #{record.ddDate},
+      </if>
+      <if test="record.shDate != null" >
+        SH_DATE = #{record.shDate,jdbcType=DATE},
+      </if>
+      <if test="record.memberId != null" >
+        MEMBER_ID = #{record.memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberCode != null" >
+        MEMBER_CODE = #{record.memberCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipName != null" >
+        SHIP_NAME = #{record.shipName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipMobile != null" >
+        SHIP_MOBILE = #{record.shipMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipAddress != null" >
+        SHIP_ADDRESS = #{record.shipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalProductPrice != null" >
+        TOTAL_PRODUCT_PRICE = #{record.totalProductPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outCreateDate != null" >
+        OUT_CREATE_DATE = #{record.outCreateDate,jdbcType=DATE},
+      </if>
+      <if test="record.createDate != null" >
+        CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      </if>
+      <if test="record.lrjdedate != null" >
+        LRJDEDATE = #{record.lrjdedate,jdbcType=DATE},
+      </if>
+      <if test="record.ckDate != null" >
+        CK_DATE = #{record.ckDate,jdbcType=DATE},
+      </if>
+      <if test="record.storesInvoiceId != null" >
+        STORES_INVOICE_ID = #{record.storesInvoiceId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.storesInvoiceName != null" >
+        STORES_INVOICE_NAME = #{record.storesInvoiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storesWorkerName != null" >
+        STORES_WORKER_NAME = #{record.storesWorkerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.needInstall != null" >
+        NEED_INSTALL = #{record.needInstall,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispatchMemo != null" >
+        DISPATCH_MEMO = #{record.dispatchMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispatchSn != null" >
+        DISPATCH_SN = #{record.dispatchSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo2 != null" >
+        MEMO2 = #{record.memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceInfo != null" >
+        INVOICE_INFO = #{record.invoiceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workOrderId != null" >
+        WORK_ORDER_ID = #{record.workOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pushTime != null" >
+        PUSH_TIME = #{record.pushTime,jdbcType=DATE},
+      </if>
+      <if test="record.deleteFlag != null" >
+        DELETE_FLAG = #{record.deleteFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="record.workOrderTime != null" >
+        WORK_ORDER_TIME = #{record.workOrderTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update TB_ORDER
+    set FID = #{record.fid,jdbcType=VARCHAR},
+      ORDER_SN = #{record.orderSn,jdbcType=DECIMAL},
+      ORDER_TYPE = #{record.orderType,jdbcType=VARCHAR},
+      ORG_ID = #{record.orgId,jdbcType=DECIMAL},
+      STORE_ID = #{record.storeId,jdbcType=DECIMAL},
+      STORE_NAME = #{record.storeName,jdbcType=VARCHAR},
+      WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      WAREHOUSE_NAME = #{record.warehouseName,jdbcType=VARCHAR},
+      OUT_ORDER_SN = #{record.outOrderSn,jdbcType=VARCHAR},
+      CHECKSTATUS = #{record.checkstatus,jdbcType=DECIMAL},
+      OUT_STATUS = #{record.outStatus,jdbcType=VARCHAR},
+      DD_DATE = #{record.ddDate,jdbcType=DATE},
+      SH_DATE = #{record.shDate,jdbcType=DATE},
+      MEMBER_ID = #{record.memberId,jdbcType=VARCHAR},
+      MEMBER_CODE = #{record.memberCode,jdbcType=VARCHAR},
+      SHIP_NAME = #{record.shipName,jdbcType=VARCHAR},
+      SHIP_MOBILE = #{record.shipMobile,jdbcType=VARCHAR},
+      SHIP_ADDRESS = #{record.shipAddress,jdbcType=VARCHAR},
+      TOTAL_PRODUCT_PRICE = #{record.totalProductPrice,jdbcType=DECIMAL},
+      OUT_CREATE_DATE = #{record.outCreateDate,jdbcType=DATE},
+      CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      LRJDEDATE = #{record.lrjdedate,jdbcType=DATE},
+      CK_DATE = #{record.ckDate,jdbcType=DATE},
+      STORES_INVOICE_ID = #{record.storesInvoiceId,jdbcType=DECIMAL},
+      STORES_INVOICE_NAME = #{record.storesInvoiceName,jdbcType=VARCHAR},
+      STORES_WORKER_NAME = #{record.storesWorkerName,jdbcType=VARCHAR},
+      NEED_INSTALL = #{record.needInstall,jdbcType=VARCHAR},
+      DISPATCH_MEMO = #{record.dispatchMemo,jdbcType=VARCHAR},
+      DISPATCH_SN = #{record.dispatchSn,jdbcType=VARCHAR},
+      MEMO = #{record.memo,jdbcType=VARCHAR},
+      MEMO2 = #{record.memo2,jdbcType=VARCHAR},
+      INVOICE_INFO = #{record.invoiceInfo,jdbcType=VARCHAR},
+      WORK_ORDER_ID = #{record.workOrderId,jdbcType=VARCHAR},
+      PUSH_TIME = #{record.pushTime,jdbcType=DATE},
+      DELETE_FLAG = #{record.deleteFlag,jdbcType=DECIMAL},
+      WORK_ORDER_TIME = #{record.workOrderTime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

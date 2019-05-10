@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.TbWorkOrderMapperCustom" >
+
+	<resultMap id="BaseResultMap" type="com.easyhome.po.TbWorkOrder" >
+	    <result column="FID" property="fid" jdbcType="VARCHAR" />
+	    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+	    <result column="WORK_NO" property="workNo" jdbcType="VARCHAR" />
+	    <result column="SEND_DATE" property="sendDate" jdbcType="DATE" />
+	    <result column="SENDER" property="sender" jdbcType="VARCHAR" />
+	    <result column="PLAT_FORM_ID" property="platFormId" jdbcType="VARCHAR" />
+	    <result column="PLAT_FORM_NAME" property="platFormName" jdbcType="VARCHAR" />
+	    <result column="FRANCHISEE_ID" property="franchiseeId" jdbcType="VARCHAR" />
+	    <result column="MASTER_ID" property="masterId" jdbcType="VARCHAR" />
+	    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+	    <result column="GIVE_REASONS" property="giveReasons" jdbcType="VARCHAR" />
+	    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+	    <result column="SINGER" property="singer" jdbcType="VARCHAR" />
+	    <result column="SING_TIME" property="singTime" jdbcType="DATE" />
+	    <result column="SERVICE_MAN" property="serviceMan" jdbcType="VARCHAR" />
+	    <result column="SERVICE_FEEDBACK" property="serviceFeedback" jdbcType="VARCHAR" />
+	    <result column="CUS_NAME" property="cusName" jdbcType="VARCHAR" />
+	    <result column="CUS_ADDRESS" property="cusAddress" jdbcType="VARCHAR" />
+	    <result column="CUS_TEL" property="cusTel" jdbcType="VARCHAR" />
+	    <result column="SENDER_ID" property="senderId" jdbcType="VARCHAR" />
+	    <result column="SERVICE_MAN_ID" property="serviceManId" jdbcType="VARCHAR" />
+	    <result column="ORDER_SN" property="orderSn" jdbcType="DECIMAL" />
+	    <result column="MASTER_NAME" property="masterName" jdbcType="VARCHAR" />
+	    <result column="STATUS_DISPLAY" property="statusDisplay" jdbcType="VARCHAR" />
+	    <result column="FEEDBACK_CONTENT" property="feedbackContent" jdbcType="VARCHAR" />
+	    <result column="INSTALL_LINK_PHONE" property="installLinkPhone" jdbcType="VARCHAR" />
+	    <result column="INSTALL_LINK_MAN" property="installLinkMan" jdbcType="VARCHAR" />
+	    <result column="FEEDBACK_TIME" property="feedbackTime" jdbcType="DATE" />
+	    <result column="FEEDBACK_MAN" property="feedbackMan" jdbcType="VARCHAR" />
+	    <result column="INSTALL_LINK_ADDRESS" property="installLinkAddress" jdbcType="VARCHAR" />
+	    <result column="EVAL_SCORE" property="evalScore" jdbcType="DECIMAL" />
+	    <result column="CUSTOMER_EVAL" property="customerEval" jdbcType="VARCHAR" />
+	    <result column="IS_CUS_CONFIRM" property="isCusConfirm" jdbcType="DECIMAL" />
+	    <result column="REPORT_MAN" property="reportMan" jdbcType="VARCHAR" />
+	    <result column="COMPLETE_DATE" property="completeDate" jdbcType="DATE" />
+	    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+	    <result column="BILL_DATE" property="billDate" jdbcType="DATE" />
+	    <result column="MASTER_PHONE" property="masterPhone" jdbcType="VARCHAR" />
+	    <result column="WORK_ORDER_MASTER_ID" property="workOrderMasterId" jdbcType="VARCHAR" />
+	    <result column="BOOKING_TIME" property="bookingTime" jdbcType="DATE" />
+	    <result column="DISPATCH_SN" property="dispatchSn" jdbcType="VARCHAR" />
+	    <result column="DISPATCH_MEMO" property="dispatchMemo" jdbcType="VARCHAR" />
+	    <result column="MEMO2" property="memo2" jdbcType="VARCHAR" />
+	    <result column="STORE_NAME" property="storeName" jdbcType="VARCHAR" />
+	    <result column="WAREHOUSE_NAME" property="warehouseName" jdbcType="VARCHAR" />
+	    <result column="FEEDBACK_VALIDITY" property="feedbackValidity" jdbcType="VARCHAR" />
+	    <result column="IS_FEE" property="isFee" jdbcType="VARCHAR" />
+	    <result column="CUSTOMER_EVAL_SCORE" property="customerEvalScore" jdbcType="DECIMAL" />
+	    <result column="FEEDBACK_REMARK" property="feedbackRemark" jdbcType="VARCHAR" />
+	    <result column="SATISFACTION1" property="satisfaction1" jdbcType="DECIMAL" />
+	    <result column="SATISFACTION2" property="satisfaction2" jdbcType="DECIMAL" />
+	    <result column="SATISFACTION3" property="satisfaction3" jdbcType="DECIMAL" />
+	    <result column="CHECK_CODE" property="checkCode" jdbcType="VARCHAR" />
+	    <result column="OUT_ORDER_SN" property="outOrderSn" jdbcType="VARCHAR" />
+	    <result column="FEEDBACK_STATUS" property="feedbackStatus" jdbcType="VARCHAR" />
+	    <result column="AUDIT_STATUS" property="auditStatus" jdbcType="DECIMAL" />
+	    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	    <result column="IS_TMALL_ORDER" property="isTmallOrder" jdbcType="DECIMAL" />
+	    <result column="OMS_DISPATCH_NO" property="omsDispatchNo" jdbcType="VARCHAR" />
+	    <result column="EVAL_SERVICE_COMPLETE" property="evalServiceComplete" jdbcType="DECIMAL" />
+	    <result column="EVAL_DELIVERY" property="evalDelivery" jdbcType="DECIMAL" />
+	    <result column="EVAL_INSTALL" property="evalInstall" jdbcType="DECIMAL" />
+	    <result column="EVAL_PHONE_BACK" property="evalPhoneBack" jdbcType="DECIMAL" />
+	    <result column="VIEW_TIME" property="viewTime" jdbcType="DATE" />
+	  </resultMap>
+	  <sql id="Example_Where_Clause" >
+	    <where >
+	      <foreach collection="oredCriteria" item="criteria" separator="or" >
+	        <if test="criteria.valid" >
+	          <trim prefix="(" suffix=")" prefixOverrides="and" >
+	            <foreach collection="criteria.criteria" item="criterion" >
+	              <choose >
+	                <when test="criterion.noValue" >
+	                  and ${criterion.condition}
+	                </when>
+	                <when test="criterion.singleValue" >
+	                  and ${criterion.condition} #{criterion.value}
+	                </when>
+	                <when test="criterion.betweenValue" >
+	                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	                </when>
+	                <when test="criterion.listValue" >
+	                  and ${criterion.condition}
+	                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                    #{listItem}
+	                  </foreach>
+	                </when>
+	              </choose>
+	            </foreach>
+	          </trim>
+	        </if>
+	      </foreach>
+	    </where>
+	  </sql>
+	  <sql id="Update_By_Example_Where_Clause" >
+	    <where >
+	      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+	        <if test="criteria.valid" >
+	          <trim prefix="(" suffix=")" prefixOverrides="and" >
+	            <foreach collection="criteria.criteria" item="criterion" >
+	              <choose >
+	                <when test="criterion.noValue" >
+	                  and ${criterion.condition}
+	                </when>
+	                <when test="criterion.singleValue" >
+	                  and ${criterion.condition} #{criterion.value}
+	                </when>
+	                <when test="criterion.betweenValue" >
+	                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	                </when>
+	                <when test="criterion.listValue" >
+	                  and ${criterion.condition}
+	                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                    #{listItem}
+	                  </foreach>
+	                </when>
+	              </choose>
+	            </foreach>
+	          </trim>
+	        </if>
+	      </foreach>
+	    </where>
+	  </sql>
+	  <sql id="Base_Column_List" >
+	    FID, ORDER_ID, WORK_NO, SEND_DATE, SENDER, PLAT_FORM_ID, PLAT_FORM_NAME, FRANCHISEE_ID, 
+	    MASTER_ID, STATUS, GIVE_REASONS, AMOUNT, SINGER, SING_TIME, SERVICE_MAN, SERVICE_FEEDBACK, 
+	    CUS_NAME, CUS_ADDRESS, CUS_TEL, SENDER_ID, SERVICE_MAN_ID, ORDER_SN, MASTER_NAME, 
+	    STATUS_DISPLAY, FEEDBACK_CONTENT, INSTALL_LINK_PHONE, INSTALL_LINK_MAN, FEEDBACK_TIME, 
+	    FEEDBACK_MAN, INSTALL_LINK_ADDRESS, EVAL_SCORE, CUSTOMER_EVAL, IS_CUS_CONFIRM, REPORT_MAN, 
+	    COMPLETE_DATE, TYPE, BILL_DATE, MASTER_PHONE, WORK_ORDER_MASTER_ID, BOOKING_TIME, 
+	    DISPATCH_SN, DISPATCH_MEMO, MEMO2, STORE_NAME, WAREHOUSE_NAME, FEEDBACK_VALIDITY, 
+	    IS_FEE, CUSTOMER_EVAL_SCORE, FEEDBACK_REMARK, SATISFACTION1, SATISFACTION2, SATISFACTION3, 
+	    CHECK_CODE, OUT_ORDER_SN, FEEDBACK_STATUS, AUDIT_STATUS, REMARK, IS_TMALL_ORDER, 
+	    OMS_DISPATCH_NO, EVAL_SERVICE_COMPLETE, EVAL_DELIVERY, EVAL_INSTALL, EVAL_PHONE_BACK, 
+	    VIEW_TIME
+	  </sql>
+ 	<select id="getBadgeByMasterId" parameterType="string" resultType="com.easyhome.vo.MasterBadge">
+ 		select master_id masterId,gold goldMedal,silver silverMedal,copper copperMedal
+		from
+			(select master_id,
+			sum((case total when 15 then 1 else 0 end)) gold,
+			sum((case total when 12 then 1 when 13 then 1 when 14 then 1 else 0 end)) silver, 
+			sum((case total when 11 then 1 when 10 then 1 when 9 then 1 else 0 end)) copper
+		from(
+			select master_id,nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0) total from TB_WORK_ORDER t)
+			group by master_id)
+		where master_id = #{value}
+ 	</select>
+ 	
+ 	<select id="findRankingList" parameterType="string" resultType="com.easyhome.vo.BadgeRanking">
+ 	<![CDATA[
+ 		select rm orderNum,master_id masterId,sorce,organize,goldNum,silverNum,copperNum,masterName
+	    from
+	      (select rownum rm,master_id,sorce,organize,goldNum,silverNum,copperNum,masterName from (
+	      select master_id,nvl(gold,0)+nvl(silver,0)+nvl(copper,0) sorce,
+	      (select organize_name from tb_master where master_id = fid) organize,
+	      (select name from tb_master where master_id = fid) masterName,
+	      goldNum,silverNum,copperNum
+	      from
+	      (select master_id,
+	      sum((case total when 15 then 1 else 0 end)*5) gold,
+	      sum((case total when 12 then 1 when 13 then 1 when 14 then 1 else 0 end)*4) silver, 
+	      sum((case total when 11 then 1 when 10 then 1 when 9 then 1 else 0 end)*3) copper,
+	      sum(case total when 15 then 1 else 0 end) goldNum,
+				sum(case total when 12 then 1 when 13 then 1 when 14 then 1 else 0 end) silverNum, 
+				sum(case total when 11 then 1 when 10 then 1 when 9 then 1 else 0 end) copperNum
+	      from(
+	      select master_id,nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0) total from TB_WORK_ORDER t)
+	      group by master_id)
+	      order by gold desc,silver desc,copper desc))
+	    where rm<=5 or master_id = #{value}
+ 		]]>
+ 	</select>
+ 	
+ 	<!-- 工单查询条件 -->
+	<sql id="query_calculate_satisfied_report_where">
+		<if test="province!=null and province!=''">
+			and province = #{province}
+		</if>
+		<if test="platform!=null and platform!=''">
+			and plat_form_name = #{platform}
+		</if>
+		<if test="start!=null and start!=''">
+		<![CDATA[
+			and complete_date > to_date(#{start},'yyyy-MM-dd')
+			]]>
+		</if>
+		<if test="end!=null and end!=''">
+		<![CDATA[
+			and complete_date < to_date(#{end},'yyyy-MM-dd')
+			]]>
+		</if>
+		<if test="masterName!=null and masterName!=''">
+			and master_name = #{masterName}
+		</if>
+	</sql>
+ 	
+ 	<select id="calculateSatisfiedReportByOrderList" parameterType="com.easyhome.vo.SatisfiedByWokeOrderQuery" resultType="com.easyhome.vo.SatisfiedByWokeOrderCustom">
+ 		<!-- 引入分页头 -->
+   		<include refid="com.easyhome.mapping.commonSql.page_start" />
+ 		select 
+			t.work_no workNo,
+			t.type,
+			t.plat_form_name platform,
+			t.province,
+			t.cus_name cusName,
+			t.cus_tel cusTel,
+			t.cus_address cusAddress,
+			t.complete_date completeDate,
+			t.master_name masterName,
+			t.master_id masterId,
+			t.master_phone masterPhone,
+			t.satisfaction1 timely,
+			t.satisfaction2 attitude,
+			t.satisfaction3 skill,
+			t.t1 timelySatisfied,
+			t.t2 attitudeSatisfied,
+			t.t3 skillSatisfied,
+			t.t4 comprehensive,
+			t.t5 comprehensivePercent
+		from(
+			select t.work_no,t.type,t.plat_form_name,(select service_province_display from tb_master where t.master_id = fid) as province,
+			t.cus_name,t.cus_tel,t.cus_address,t.complete_date,t.master_name,t.master_id,t.master_phone,t.satisfaction1,t.satisfaction2,t.satisfaction3, 
+			(case t.satisfaction1 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t1,
+			(case t.satisfaction2 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t2,
+			(case t.satisfaction3 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t3,
+			trunc((nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0))/3,1) t4,
+			trunc((nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0))/15*100,1) t5
+			from tb_work_order t ) t
+		<where>
+			<include refid="query_calculate_satisfied_report_where"/>
+		</where>
+		order by t.t5 desc
+		<!-- 分页尾部 -->
+		<include refid="com.easyhome.mapping.commonSql.page_end" />
+ 	</select>
+ 	
+ 	<select id="calculateSatisfiedReportByOrderCount" parameterType="com.easyhome.vo.SatisfiedByWokeOrderQuery" resultType="int">
+	 	select count(1) from (
+	 		select 
+				t.work_no workNo,
+				t.type,
+				t.plat_form_name platform,
+				t.province,
+				t.cus_name cusName,
+				t.cus_tel cusTel,
+				t.cus_address cusAddress,
+				t.complete_date completeDate,
+				t.master_name masterName,
+				t.master_id masterId,
+				t.master_phone masterPhone,
+				t.satisfaction1 timely,
+				t.satisfaction2 attitude,
+				t.satisfaction3 skill,
+				t.t1 timelySatisfied,
+				t.t2 attitudeSatisfied,
+				t.t3 skillSatisfied,
+				t.t4 comprehensive,
+				t.t5 comprehensivePercent
+			from(
+				select t.work_no,t.type,t.plat_form_name,(select service_province_display from tb_master where t.master_id = fid) as province,
+				t.cus_name,t.cus_tel,t.cus_address,t.complete_date,t.master_name,t.master_id,t.master_phone,t.satisfaction1,t.satisfaction2,t.satisfaction3, 
+				(case t.satisfaction1 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t1,
+				(case t.satisfaction2 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t2,
+				(case t.satisfaction3 when 5 then '100%' when 4 then '80%' when 3 then '50%' when 2 then '20%' else '0%' end) t3,
+				trunc((nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0))/3,1) t4,
+				trunc((nvl(satisfaction1,0)+nvl(satisfaction2,0)+nvl(satisfaction3,0))/15*100,1) t5
+				from tb_work_order t ) t
+			<where>
+				<include refid="query_calculate_satisfied_report_where"/>
+			</where>
+		)
+ 	</select>
+ 	
+ 	<!-- 获取省份 -->
+ 	<select id="getProvince" resultType="string">
+ 		select distinct(provincename) province  from tb_province
+ 	</select>
+ 	
+ 	<!-- 获取调度平台 -->
+ 	<select id="getOrganize" resultType="string">
+ 		select distinct(name) name from tb_organize
+ 	</select>
+ 	
+ 	
+ 	<!-- 工单查询条件技师 -->
+	<sql id="query_calculate_satisfied_master_report_where">
+		<if test="province!=null and province!=''">
+			and service_province_display = #{province}
+		</if>
+		<if test="platform!=null and platform!=''">
+			and organize_name = #{platform}
+		</if>
+		<if test="masterName!=null and masterName!=''">
+			and name = #{masterName}
+		</if>
+	</sql>
+	
+	<sql id="query_calculate_satisfied_master_date_report_where">
+		<if test="start!=null and start!=''">
+		<![CDATA[
+			and complete_date > to_date(#{start},'yyyy-MM-dd')
+			]]>
+		</if>
+		<if test="end!=null and end!=''">
+		<![CDATA[
+			and complete_date < to_date(#{end},'yyyy-MM-dd')
+			]]>
+		</if>
+	</sql>
+ 	
+ 	
+ 	<select id="calculateSatisfiedByMasterList" parameterType="com.easyhome.vo.SatisfiedByMasterQuery" resultType="com.easyhome.vo.SatisfiedByMasterCustom">
+ 		<!-- 引入分页头 -->
+   		<include refid="com.easyhome.mapping.commonSql.page_start" />
+ 		select x.master_id masterId,
+		       tm.organize_name organize,
+		       tm.service_province_display province,
+		       tm.name,
+		       tm.phone,
+		       x5.timely5,x4.timely4,x3.timely3,x2.timely2,x1.timely1,x0.timely0,
+		       y5.attitude5,y4.attitude4,y3.attitude3,y2.attitude2,y1.attitude1,y0.attitude0,
+		       z5.skill5,z4.skill4,z3.skill3,z2.skill2,z1.skill1,z0.skill0,
+		       t.total,
+		       t1.effective
+		from
+			(select  distinct(master_id)from TB_WORK_ORDER t) x
+			left join (select master_id,count(satisfaction1) timely5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='5'  group by master_id) x5 on x5.master_id = x.master_id
+			left join (select master_id,count(satisfaction1) timely4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='4' group by master_id) x4 on x4.master_id = x.master_id
+			left join (select master_id,count(satisfaction1) timely3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='3' group by master_id) x3 on x3.master_id = x.master_id
+			left join (select master_id,count(satisfaction1) timely2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='2' group by master_id) x2 on x2.master_id = x.master_id
+			left join (select master_id,count(satisfaction1) timely1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='1' group by master_id) x1 on x1.master_id = x.master_id
+			left join (select master_id,count(satisfaction1) timely0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='0' group by master_id) x0 on x0.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='5' group by master_id) y5 on y5.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='4' group by master_id) y4 on y4.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='3' group by master_id) y3 on y3.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='2' group by master_id) y2 on y2.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='1' group by master_id) y1 on y1.master_id = x.master_id
+			left join (select master_id,count(satisfaction2) attitude0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='0' group by master_id) y0 on y0.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='5' group by master_id) z5 on z5.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='4' group by master_id) z4 on z4.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='3' group by master_id) z3 on z3.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='2' group by master_id) z2 on z2.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='1' group by master_id) z1 on z1.master_id = x.master_id
+			left join (select master_id,count(satisfaction3) skill0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='0' group by master_id) z0 on z0.master_id = x.master_id
+			left join (select tm.fid,tm.organize_name,tm.service_province_display,tm.name,tm.phone from tb_master tm) tm on tm.fid = x.master_id
+			left join (select master_id,count(1) total from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> group by master_id) t on t.master_id = x.master_id
+			left join (select master_id,count(1) effective from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and t.satisfaction1>0 and t.satisfaction2>0 and t.satisfaction3>0 group by master_id) t1 on t1.master_id = x.master_id
+		<where>
+			<include refid="query_calculate_satisfied_master_report_where"/>
+		</where>
+		order by nvl(effective,0) desc,nvl(total,0) desc
+		<!-- 分页尾部 -->
+		<include refid="com.easyhome.mapping.commonSql.page_end" />
+ 	</select>
+ 	
+ 	<select id="calculateSatisfiedByMasterCount" parameterType="com.easyhome.vo.SatisfiedByMasterQuery" resultType="int">
+ 		select count(1) from (
+	 		select x.master_id masterId,
+			       tm.organize_name organize,
+			       tm.service_province_display province,
+			       tm.name,
+			       tm.phone,
+			       x5.timely5,x4.timely4,x3.timely3,x2.timely2,x1.timely1,x0.timely0,
+			       y5.attitude5,y4.attitude4,y3.attitude3,y2.attitude2,y1.attitude1,y0.attitude0,
+			       z5.skill5,z4.skill4,z3.skill3,z2.skill2,z1.skill1,z0.skill0,
+			       t.total,
+			       t1.effective
+			from
+				(select  distinct(master_id)from TB_WORK_ORDER t) x
+				left join (select master_id,count(satisfaction1) timely5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='5'  group by master_id) x5 on x5.master_id = x.master_id
+				left join (select master_id,count(satisfaction1) timely4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='4' group by master_id) x4 on x4.master_id = x.master_id
+				left join (select master_id,count(satisfaction1) timely3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='3' group by master_id) x3 on x3.master_id = x.master_id
+				left join (select master_id,count(satisfaction1) timely2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='2' group by master_id) x2 on x2.master_id = x.master_id
+				left join (select master_id,count(satisfaction1) timely1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='1' group by master_id) x1 on x1.master_id = x.master_id
+				left join (select master_id,count(satisfaction1) timely0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction1='0' group by master_id) x0 on x0.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='5' group by master_id) y5 on y5.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='4' group by master_id) y4 on y4.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='3' group by master_id) y3 on y3.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='2' group by master_id) y2 on y2.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='1' group by master_id) y1 on y1.master_id = x.master_id
+				left join (select master_id,count(satisfaction2) attitude0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction2='0' group by master_id) y0 on y0.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill5 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='5' group by master_id) z5 on z5.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill4 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='4' group by master_id) z4 on z4.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill3 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='3' group by master_id) z3 on z3.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill2 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='2' group by master_id) z2 on z2.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill1 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='1' group by master_id) z1 on z1.master_id = x.master_id
+				left join (select master_id,count(satisfaction3) skill0 from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and satisfaction3='0' group by master_id) z0 on z0.master_id = x.master_id
+				left join (select tm.fid,tm.organize_name,tm.service_province_display,tm.name,tm.phone from tb_master tm) tm on tm.fid = x.master_id
+				left join (select master_id,count(1) total from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> group by master_id) t on t.master_id = x.master_id
+				left join (select master_id,count(1) effective from TB_WORK_ORDER t <where><include refid="query_calculate_satisfied_master_date_report_where"/></where> and t.satisfaction1>0 and t.satisfaction2>0 and t.satisfaction3>0 group by master_id) t1 on t1.master_id = x.master_id
+			<where>
+				<include refid="query_calculate_satisfied_master_report_where"/>
+			</where>
+			order by nvl(effective,0) desc,nvl(total,0) desc
+		)
+ 	</select>
+ 	
+ 	<!-- 催单条件 --> 
+ 	<sql id="query_reminder_work_order_where">
+		<if test="workNo!=null and workNo!=''">
+			and work_no = #{workNo}
+		</if>
+		<if test="overtime!=null and overtime!=''">
+			<if test="overtime==1">
+				<![CDATA[
+				and overtime <= 30
+				]]>
+			</if>
+			<if test="overtime==2">
+				<![CDATA[
+				and overtime > 30
+				and overtime <= 60
+				]]>
+			</if>
+			<if test="overtime==3">
+				<![CDATA[
+				and overtime > 60
+				and overtime <= 120
+				]]>
+			</if>
+			<if test="overtime==4">
+				<![CDATA[
+				and overtime > 120
+				]]>
+			</if>
+		</if>
+	</sql>
+ 	
+ 	<!-- 催单列表 -->
+ 	<select id="findReminderWorkOrderList" parameterType="com.easyhome.vo.ReminderWorkOrderQuery" resultType="com.easyhome.vo.ReminderWorkOrder">
+ 		<!-- 引入分页头 -->
+   		<include refid="com.easyhome.mapping.commonSql.page_start" />
+ 		select t.fid,
+ 			t.work_no workNo,
+ 			t.send_date sendDate,
+ 			t.overtime,
+ 			t.sender,
+ 			t.plat_form_name platFormName,
+ 			t.master_id masterId,
+ 			t.master_name masterName,
+ 			t.master_phone masterPhone,
+ 			t.cus_name cusName,
+ 			t.cus_tel cusTel,
+ 			t.cus_address cusAddress,
+ 			booking
+		from (
+			select t.fid,t.work_no,t.send_date,t.overtime,t.sender,t.plat_form_name,t.master_id,t.master_name,t.master_phone,t.cus_name,t.cus_tel,t.cus_address,booking from (
+			select t.fid,t.work_no,t.send_date,
+			ROUND(TO_NUMBER(sysdate - t.send_date)*24*60) overtime,
+			t.sender,t.plat_form_name,t.master_id,t.master_name,t.master_phone,t.cus_name,t.cus_tel,t.cus_address,
+			(select count(1) from tb_work_order_booking tw where t.fid = tw.work_order_id) booking
+			from TB_WORK_ORDER t where t.status = '1' and to_char(send_date,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')) t
+			where booking = 0) t
+		<where>
+			<include refid="query_reminder_work_order_where"/>
+		</where>
+		order by send_date asc
+		<!-- 分页尾部 -->
+		<include refid="com.easyhome.mapping.commonSql.page_end" />
+ 	</select>
+ 	
+ 	<!-- 催单总记录数 -->
+ 	<select id="findReminderWorkOrderCount" parameterType="com.easyhome.vo.ReminderWorkOrderQuery" resultType="int">
+ 		select count(1) from (
+ 			select t.fid,
+ 			t.work_no workNo,
+ 			t.send_date sendDate,
+ 			t.overtime,
+ 			t.sender,
+ 			t.plat_form_name platFormName,
+ 			t.master_id masterId,
+ 			t.master_name masterName,
+ 			t.master_phone masterPhone,
+ 			t.cus_name cusName,
+ 			t.cus_tel cusTel,
+ 			t.cus_address cusAddress,
+ 			booking
+		from (
+			select t.fid,t.work_no,t.send_date,t.overtime,t.sender,t.plat_form_name,t.master_id,t.master_name,t.master_phone,t.cus_name,t.cus_tel,t.cus_address,booking from (
+			select t.fid,t.work_no,t.send_date,
+			ROUND(TO_NUMBER(sysdate - t.send_date)*24*60) overtime,
+			t.sender,t.plat_form_name,t.master_id,t.master_name,t.master_phone,t.cus_name,t.cus_tel,t.cus_address,
+			(select count(1) from tb_work_order_booking tw where t.fid = tw.work_order_id) booking
+			from TB_WORK_ORDER t where t.status = '1' and to_char(send_date,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')) t
+			where booking = 0) t
+		<where>
+			<include refid="query_reminder_work_order_where"/>
+		</where>
+ 		)
+ 	</select>
+ 	
+ 	<update id="updateByExampleSelective" parameterType="map" >
+    update TB_WORK_ORDER
+    <set >
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workNo != null" >
+        WORK_NO = #{record.workNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendDate != null" >
+        SEND_DATE = #{record.sendDate},
+      </if>
+      <if test="record.sender != null" >
+        SENDER = #{record.sender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platFormId != null" >
+        PLAT_FORM_ID = #{record.platFormId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platFormName != null" >
+        PLAT_FORM_NAME = #{record.platFormName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.franchiseeId != null" >
+        FRANCHISEE_ID = #{record.franchiseeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.masterId != null" >
+        MASTER_ID = #{record.masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.giveReasons != null" >
+        GIVE_REASONS = #{record.giveReasons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.singer != null" >
+        SINGER = #{record.singer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.singTime != null" >
+        SING_TIME = #{record.singTime},
+      </if>
+      <if test="record.serviceMan != null" >
+        SERVICE_MAN = #{record.serviceMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceFeedback != null" >
+        SERVICE_FEEDBACK = #{record.serviceFeedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cusName != null" >
+        CUS_NAME = #{record.cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cusAddress != null" >
+        CUS_ADDRESS = #{record.cusAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cusTel != null" >
+        CUS_TEL = #{record.cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.senderId != null" >
+        SENDER_ID = #{record.senderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceManId != null" >
+        SERVICE_MAN_ID = #{record.serviceManId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderSn != null" >
+        ORDER_SN = #{record.orderSn,jdbcType=DECIMAL},
+      </if>
+      <if test="record.masterName != null" >
+        MASTER_NAME = #{record.masterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusDisplay != null" >
+        STATUS_DISPLAY = #{record.statusDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackContent != null" >
+        FEEDBACK_CONTENT = #{record.feedbackContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.installLinkPhone != null" >
+        INSTALL_LINK_PHONE = #{record.installLinkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.installLinkMan != null" >
+        INSTALL_LINK_MAN = #{record.installLinkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackTime != null" >
+        FEEDBACK_TIME = #{record.feedbackTime},
+      </if>
+      <if test="record.feedbackMan != null" >
+        FEEDBACK_MAN = #{record.feedbackMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.installLinkAddress != null" >
+        INSTALL_LINK_ADDRESS = #{record.installLinkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evalScore != null" >
+        EVAL_SCORE = #{record.evalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerEval != null" >
+        CUSTOMER_EVAL = #{record.customerEval,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isCusConfirm != null" >
+        IS_CUS_CONFIRM = #{record.isCusConfirm,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reportMan != null" >
+        REPORT_MAN = #{record.reportMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completeDate != null" >
+        COMPLETE_DATE = #{record.completeDate},
+      </if>
+      <if test="record.type != null" >
+        TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billDate != null" >
+        BILL_DATE = #{record.billDate},
+      </if>
+      <if test="record.masterPhone != null" >
+        MASTER_PHONE = #{record.masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workOrderMasterId != null" >
+        WORK_ORDER_MASTER_ID = #{record.workOrderMasterId,jdbcType=VARCHAR},
+      </if>
+        BOOKING_TIME = #{record.bookingTime,jdbcType=TIMESTAMP},
+      <if test="record.dispatchSn != null" >
+        DISPATCH_SN = #{record.dispatchSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispatchMemo != null" >
+        DISPATCH_MEMO = #{record.dispatchMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo2 != null" >
+        MEMO2 = #{record.memo2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeName != null" >
+        STORE_NAME = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.warehouseName != null" >
+        WAREHOUSE_NAME = #{record.warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackValidity != null" >
+        FEEDBACK_VALIDITY = #{record.feedbackValidity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isFee != null" >
+        IS_FEE = #{record.isFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerEvalScore != null" >
+        CUSTOMER_EVAL_SCORE = #{record.customerEvalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.feedbackRemark != null" >
+        FEEDBACK_REMARK = #{record.feedbackRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.satisfaction1 != null" >
+        SATISFACTION1 = #{record.satisfaction1,jdbcType=DECIMAL},
+      </if>
+      <if test="record.satisfaction2 != null" >
+        SATISFACTION2 = #{record.satisfaction2,jdbcType=DECIMAL},
+      </if>
+      <if test="record.satisfaction3 != null" >
+        SATISFACTION3 = #{record.satisfaction3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.checkCode != null" >
+        CHECK_CODE = #{record.checkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outOrderSn != null" >
+        OUT_ORDER_SN = #{record.outOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackStatus != null" >
+        FEEDBACK_STATUS = #{record.feedbackStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditStatus != null" >
+        AUDIT_STATUS = #{record.auditStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isTmallOrder != null" >
+        IS_TMALL_ORDER = #{record.isTmallOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="record.omsDispatchNo != null" >
+        OMS_DISPATCH_NO = #{record.omsDispatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evalServiceComplete != null" >
+        EVAL_SERVICE_COMPLETE = #{record.evalServiceComplete,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evalDelivery != null" >
+        EVAL_DELIVERY = #{record.evalDelivery,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evalInstall != null" >
+        EVAL_INSTALL = #{record.evalInstall,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evalPhoneBack != null" >
+        EVAL_PHONE_BACK = #{record.evalPhoneBack,jdbcType=DECIMAL},
+      </if>
+      <if test="record.viewTime != null" >
+        VIEW_TIME = #{record.viewTime},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <!-- 查询验证码 -->
+  <select id="findCheckCodeByWorkNo" resultType="string">
+  	select t.check_code from tb_work_order t where t.work_no = #{workNo}
+  </select>
+  
+  <select id="getWorkOrderStatus" parameterType="int" resultType="com.easyhome.vo.bos.OrderStatusBean">
+		select * from 
+			(select 
+			t.fid,
+			t.order_id orderId,
+			t.work_no workNo,
+			t.status,
+			t.status_display statusDisplay,
+			t.master_name masterName,
+			t.master_phone masterPhone,
+			to_char(t.bill_date,'yyyy-mm-dd hh24:mi:ss') createDate,
+			to_char(t.send_date,'yyyy-mm-dd hh24:mi:ss') sendDate,
+			to_char(t.booking_time,'yyyy-mm-dd hh24:mi:ss') bookingDate,
+			to_char(t.sing_time,'yyyy-mm-dd hh24:mi:ss') sginDate,
+			to_char(t.complete_date,'yyyy-mm-dd hh24:mi:ss') completeDate,
+			to_char(t.feedback_time,'yyyy-mm-dd hh24:mi:ss') viewDate,
+			(select tb.order_type from tb_order tb where tb.fid=t.order_id) orderType
+			from tb_work_order t
+			where t.status = #{value} ) 
+			where orderType = 'BOS'
+  </select>
+</mapper>

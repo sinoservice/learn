@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.LeaderWorkOrderDao">
+	<resultMap type="com.easyhome.po.LeaderWorkOrderEntity" id="leaderworkorder">
+		<result property="workId" column="fid" />
+		<result property="workNo" column="work_no" />
+		<result property="itemNum" column="item_count" />
+		<result property="sendTime" column="send_date" />
+		<result property="cusName" column="cus_name" />
+		<result property="cusPhone" column="cus_tel" />
+		<result property="cusAddress" column="cus_address" />
+		<result property="workerName" column="worker_name" />
+		<result property="workerPhone" column="worker_phone" />
+		<result property="workStatus" column="status" />
+	</resultMap>
+	<resultMap type="com.easyhome.po.LeaderWorkOrderDetail" id="leaderworkorderdetail">
+		<result property="workId" column="fid" />
+		<result property="workNo" column="work_no" />
+		<result property="amount" column="amount" />
+		<result property="remark" column="remark" />
+		<result property="sendTime" column="send_time" />
+		<result property="itemNum" column="item_num" />
+		<result property="bookingTime" column="booking_time" />
+		<result property="cusName" column="cus_name" />
+		<result property="cusPhone" column="cus_tel" />
+		<result property="cusAddress" column="cus_address" />
+		<result property="workerName" column="worker_name" />
+		<result property="workerPhone" column="worker_phone" />
+		<result property="signTime" column="sign_time" />
+		<result property="complateTime" column="complate_time" />
+		<result property="workStatus" column="status" />
+		<result property="isTransform" column="is_transform" />
+	</resultMap>
+	<resultMap type="com.easyhome.po.LeaderWorkOrderItemEntity" id="workorderitem">
+		<result property="workOrderItemId" column="fid" />
+		<result property="itemName" column="item_name" />
+		<result property="productName" column="goods_name" />
+		<result property="productCount" column="quantity" />
+		<result property="itemAmount" column="item_amount" />
+		<result property="requirement" column="requirement" />
+	</resultMap>
+	<resultMap type="com.easyhome.po.WorkerSelectEntity" id="workerSelect">
+		<result property="workerId" column="fid" />
+		<result property="workerName" column="name" />
+		<result property="workerPhone" column="phone" />
+	</resultMap>
+	<resultMap type="com.easyhome.po.LeaderWorkerEntity" id="worker">
+		<result property="workerId" column="fid" />
+		<result property="workerName" column="name" />
+		<result property="workerPhone" column="phone" />
+		<result property="workerType" column="user_type" />
+	</resultMap>
+	
+	<resultMap type="com.easyhome.po.LeaderMasterOrderEntity" id="master">
+	   <result property="masterId" column="fid"/>
+	   <result property="masterName" column="name"/>
+	   <result property="masterPhone" column="phone"/>
+	   <result property="masterType" column="user_type"/>
+	</resultMap>
+	<resultMap type="com.easyhome.po.WorkOrder" id="workorder">
+		<result property="id" column="fid" />
+		<result property="workNo" column="work_no" />
+		<result property="sendDate" column="send_date" />
+		<result property="amount" column="amount" />
+		<result property="orderSn" column="order_sn" />
+		<result property="itemCount" column="item_count" />
+		<result property="cusName" column="cus_name" />
+		<result property="cusPhone" column="cus_tel" />
+		<result property="cusAddress" column="cus_address" />
+		<result property="completeDate" column="complete_date " />
+		<result property="bookingTime" column="booking_time" />
+		<result property="statusDisplay" column="status_display" />
+		<result property="viewTime" column="view_time" />
+		<result property="rate" column="rate"/>
+	</resultMap>
+	<!-- 查询工单信息 -->
+	<select id="getNoSendWorkOrders" resultMap="leaderworkorder">
+		select *
+		from (select tt.*, ROWNUM as rn
+		from (SELECT t.fid,
+		t.work_no,
+		to_char(t.send_date, 'yyyy-MM-dd hh24:mm:ss') send_date,
+		t.cus_name,
+		t.cus_tel,
+		t.cus_address,
+		(select count(1)
+		from tb_work_order_item i
+		where i.work_order_id = t.fid) item_count,
+		t.is_transform,
+		t.status,
+		f.worker_name,
+		f.worker_phone
+		FROM tb_work_order t
+		LEFT JOIN tb_work_order_transform f on f.work_order_id = t.fid
+		WHERE t.master_id = #{masterId}
+		<if test='type =="1"'>
+		    AND t.is_transform = 0	AND t.status = 1	
+		</if>
+		<if test='type =="2"'>
+		    AND t.is_transform = 1	AND t.status = 1
+		</if>
+		<if test='type =="3"'>
+		    AND t.is_transform = 1	AND (t.status = 2 OR t.status = 3)
+		</if>
+		<if test='type =="4"'>
+		    <![CDATA[AND t.is_transform = 1	AND t.status >= 4 ]]> 
+		</if>
+		order by t.send_date desc) tt
+		where <![CDATA[ROWNUM <= #{rowEnd}]]>)
+		ttt
+		where <![CDATA[ttt.rn >= #{rowStart}]]>
+	</select>
+	<select id="getWorkOrderById" resultMap="leaderworkorderdetail">
+		select w.fid,
+		w.work_no,
+		w.amount,
+		w.remark,
+		to_char(w.send_date, 'yyyy-MM-dd hh24:mm:ss') send_time,
+		(select count(1) from tb_work_order_item i
+		where i.work_order_id = w.fid) item_num,
+		to_char(w.booking_time, 'yyyy-MM-dd hh24:mm:ss') booking_time,
+		w.cus_name,
+		w.cus_address,
+		w.cus_tel,
+		to_char(w.sing_time, 'yyyy-MM-dd hh24:mm:ss') sign_time,
+		to_char(w.complete_date, 'yyyy-MM-dd hh24:mm:ss') complate_time,
+		w.status,
+		w.is_transform,
+		f.worker_name,
+		f.worker_phone
+		from tb_work_order w
+		left join tb_work_order_transform f on f.work_order_id = w.fid
+		where w.fid = #{workOrderId}
+	</select>
+	<select id="getWorkOrderItems" resultMap="workorderitem">
+		select i.fid,
+		i.item_name,
+		i.goods_name,
+		i.quantity,
+		i.item_amount,
+		i.requirement
+		from tb_work_order_item i
+		where i.work_order_id = #{workOrderId}
+	</select>
+	<select id="workers" resultMap="workerSelect">
+		SELECT w.fid,w.name,w.phone FROM tb_worker w WHERE w.leader_id = #{masterId} AND w.tag = 0 AND w.locking = 0 AND w.certification_status = 1
+	</select>
+	<select id="workingCount" resultType="int">
+	    SELECT count(1) FROM TB_WORK_ORDER_TRANSFORM t WHERE t.worker_id = #{masterId}
+	</select>
+	<select id="getWorker" resultMap="worker">
+		SELECT w.fid, w.name, w.phone, u.user_type
+		  FROM tb_worker w
+		 inner join tb_app_user u
+		    on w.phone = u.phone
+		 where w.fid = #{workerId}
+	</select>
+	<select id="getLeader" resultMap="worker">
+		SELECT w.fid, w.name, w.phone, u.user_type
+		  FROM tb_master w
+		INNER JOIN tb_app_user u ON w.phone = u.phone
+		WHERE w.fid = #{masterId}
+	</select>
+	<insert id="transformWorkOrder" parameterType="com.easyhome.po.WorkerOrderTransform">
+	    INSERT INTO TB_WORK_ORDER_TRANSFORM
+		  (fid,
+		   WORK_ORDER_ID,
+		   WORKER_ID,
+		   WORKER_NAME,
+		   WORKER_PHONE,
+		   WORKER_TYPE,
+		   TRANSFORM_DATE)
+		VALUES
+		  (#{fid},#{workOrderId},#{workerId},#{workerName},#{workerPhone},#{workerType},#{transFormDate})
+	</insert>
+	<update id="updateWorkOrder">
+	     update tb_work_order o set o.is_transform = 1 where o.fid =#{workOrderId}
+	</update>
+	<update id="giveupOrder">
+	     update tb_work_order t
+	        set t.master_id      = '',
+	            t.master_name    = '',
+	            t.master_phone   = '',
+	            t.send_date      = null,
+	            t.status         = 0,
+	            t.sing_time      = null,
+	            t.status_display = '待派工',
+	            t.booking_time   = null
+	      where t.fid = #{workOrderId}
+	</update>
+	<insert id="giveupOrderHis">
+	    update tb_work_order_master m
+         set m.is_ok = 1, m.reason = #{reason}, m.cancel_time = #{cancelTime}
+       where m.work_order_id = #{workOrderId}
+         and is_ok = 0;
+	</insert>
+	<select id="workerWorkOrders" resultMap="workorder">
+	    select *
+			  from (select tt.*, ROWNUM as rn
+			          from (
+		                  SELECT t.fid,
+			                       t.work_no,
+			                       to_char(t.send_date, 'yyyy-MM-dd hh24:mm:ss') send_date,
+			                       t.amount,
+			                       t.order_sn,
+			                       t.cus_name,
+			                       t.cus_tel,
+			                       t.cus_address,
+			                       to_char(t.complete_date, 'yyyy-MM-dd hh24:mm:ss') complete_date,
+			                       to_char(t.booking_time, 'yyyy-MM-dd hh24:mm:ss') booking_time,
+			                       t.status_display,
+			                       to_char(t.view_time, 'yyyy-MM-dd hh24:mm:ss') view_time,
+			                       (select count(1)
+			                          from tb_work_order_item i
+			                         where i.work_order_id = wot.work_order_id) item_count,
+		                         wot.rate  
+		                    from  tb_work_order_transform wot
+		                    left join tb_work_order t on wot.work_order_id = t.fid
+			                where wot.worker_id = #{workerId} and t.master_id=#{masterId}
+							<if test='status =="1"'>
+							    AND t.is_transform = 1	AND t.status = 1
+							</if>
+							<if test='status =="2"'>
+							    AND t.is_transform = 1	AND (t.status = 2 OR t.status = 3)
+							</if>
+							<if test='status =="4"'>
+							    <![CDATA[AND t.is_transform = 1	AND t.status >= 4 ]]> 
+							</if>
+			                 order by wot.transform_date desc
+		                   ) tt
+			         where <![CDATA[ROWNUM <= #{rowEnd}]]>) ttt
+			 where <![CDATA[ttt.rn >= #{rowStart}]]>
+	</select>
+	
+	
+	<update id="updateTransForm">
+	   update tb_work_order_transform
+	   set worker_id=#{workerId}, 
+	       worker_name = #{name},
+	       worker_phone = #{phone},
+	       worker_type = #{workertype},
+	       transform_date =#{date}
+	   where work_order_id = #{workorderId}
+	</update>
+	<select id="getAppUser" resultMap="worker">
+	    select t.master_id fid,t.phone,t.name,t.user_type from tb_app_user t where t.master_id = #{masterId} 
+	</select>
+</mapper>

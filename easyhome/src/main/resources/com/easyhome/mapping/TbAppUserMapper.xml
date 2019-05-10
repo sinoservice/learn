@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.TbAppUserMapper" >
+  <resultMap id="BaseResultMap" type="com.easyhome.po.TbAppUser" >
+    <result column="FID" property="fid" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ADD_DATE" property="addDate" jdbcType="DATE" />
+    <result column="IS_DISABLE" property="isDisable" jdbcType="DECIMAL" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="DATE" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="IS_DRIVER" property="isDriver" jdbcType="DECIMAL" />
+    <result column="IS_INSTALL" property="isInstall" jdbcType="DECIMAL" />
+    <result column="DRIVER_ID" property="driverId" jdbcType="DECIMAL" />
+    <result column="MASTER_ID" property="masterId" jdbcType="VARCHAR" />
+    <result column="DRIVER_NAME" property="driverName" jdbcType="VARCHAR" />
+    <result column="MASTER_NAME" property="masterName" jdbcType="VARCHAR" />
+    <result column="PLAT_FORM_ID" property="platFormId" jdbcType="DECIMAL" />
+    <result column="PLAT_FORM_NAME" property="platFormName" jdbcType="VARCHAR" />
+    <result column="IS_MODIFY_PWD" property="isModifyPwd" jdbcType="DECIMAL" />
+    <result column="USER_TYPE" property="userType" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    FID, PHONE, PASSWORD, NAME, ADD_DATE, IS_DISABLE, LAST_LOGIN_TIME, STATUS, SEX, IS_DRIVER, 
+    IS_INSTALL, DRIVER_ID, MASTER_ID, DRIVER_NAME, MASTER_NAME, PLAT_FORM_ID, PLAT_FORM_NAME, 
+    IS_MODIFY_PWD, USER_TYPE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.easyhome.po.TbAppUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from TB_APP_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.easyhome.po.TbAppUserExample" >
+    delete from TB_APP_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.easyhome.po.TbAppUser" >
+    insert into TB_APP_USER (FID, PHONE, PASSWORD, 
+      NAME, ADD_DATE, IS_DISABLE, 
+      LAST_LOGIN_TIME, STATUS, SEX, 
+      IS_DRIVER, IS_INSTALL, DRIVER_ID, 
+      MASTER_ID, DRIVER_NAME, MASTER_NAME, 
+      PLAT_FORM_ID, PLAT_FORM_NAME, IS_MODIFY_PWD, 
+      USER_TYPE)
+    values (#{fid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{addDate,jdbcType=DATE}, #{isDisable,jdbcType=DECIMAL}, 
+      #{lastLoginTime,jdbcType=DATE}, #{status,jdbcType=DECIMAL}, #{sex,jdbcType=VARCHAR}, 
+      #{isDriver,jdbcType=DECIMAL}, #{isInstall,jdbcType=DECIMAL}, #{driverId,jdbcType=DECIMAL}, 
+      #{masterId,jdbcType=VARCHAR}, #{driverName,jdbcType=VARCHAR}, #{masterName,jdbcType=VARCHAR}, 
+      #{platFormId,jdbcType=DECIMAL}, #{platFormName,jdbcType=VARCHAR}, #{isModifyPwd,jdbcType=DECIMAL}, 
+      #{userType,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.easyhome.po.TbAppUser" >
+    insert into TB_APP_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        FID,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="addDate != null" >
+        ADD_DATE,
+      </if>
+      <if test="isDisable != null" >
+        IS_DISABLE,
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="isDriver != null" >
+        IS_DRIVER,
+      </if>
+      <if test="isInstall != null" >
+        IS_INSTALL,
+      </if>
+      <if test="driverId != null" >
+        DRIVER_ID,
+      </if>
+      <if test="masterId != null" >
+        MASTER_ID,
+      </if>
+      <if test="driverName != null" >
+        DRIVER_NAME,
+      </if>
+      <if test="masterName != null" >
+        MASTER_NAME,
+      </if>
+      <if test="platFormId != null" >
+        PLAT_FORM_ID,
+      </if>
+      <if test="platFormName != null" >
+        PLAT_FORM_NAME,
+      </if>
+      <if test="isModifyPwd != null" >
+        IS_MODIFY_PWD,
+      </if>
+      <if test="userType != null" >
+        USER_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addDate != null" >
+        #{addDate,jdbcType=DATE},
+      </if>
+      <if test="isDisable != null" >
+        #{isDisable,jdbcType=DECIMAL},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="isDriver != null" >
+        #{isDriver,jdbcType=DECIMAL},
+      </if>
+      <if test="isInstall != null" >
+        #{isInstall,jdbcType=DECIMAL},
+      </if>
+      <if test="driverId != null" >
+        #{driverId,jdbcType=DECIMAL},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="driverName != null" >
+        #{driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterName != null" >
+        #{masterName,jdbcType=VARCHAR},
+      </if>
+      <if test="platFormId != null" >
+        #{platFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="platFormName != null" >
+        #{platFormName,jdbcType=VARCHAR},
+      </if>
+      <if test="isModifyPwd != null" >
+        #{isModifyPwd,jdbcType=DECIMAL},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.easyhome.po.TbAppUserExample" resultType="java.lang.Integer" >
+    select count(*) from TB_APP_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update TB_APP_USER
+    <set >
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        PHONE = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addDate != null" >
+        ADD_DATE = #{record.addDate,jdbcType=DATE},
+      </if>
+      <if test="record.isDisable != null" >
+        IS_DISABLE = #{record.isDisable,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sex != null" >
+        SEX = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDriver != null" >
+        IS_DRIVER = #{record.isDriver,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isInstall != null" >
+        IS_INSTALL = #{record.isInstall,jdbcType=DECIMAL},
+      </if>
+      <if test="record.driverId != null" >
+        DRIVER_ID = #{record.driverId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.masterId != null" >
+        MASTER_ID = #{record.masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driverName != null" >
+        DRIVER_NAME = #{record.driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.masterName != null" >
+        MASTER_NAME = #{record.masterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platFormId != null" >
+        PLAT_FORM_ID = #{record.platFormId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.platFormName != null" >
+        PLAT_FORM_NAME = #{record.platFormName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isModifyPwd != null" >
+        IS_MODIFY_PWD = #{record.isModifyPwd,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userType != null" >
+        USER_TYPE = #{record.userType,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update TB_APP_USER
+    set FID = #{record.fid,jdbcType=VARCHAR},
+      PHONE = #{record.phone,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ADD_DATE = #{record.addDate,jdbcType=DATE},
+      IS_DISABLE = #{record.isDisable,jdbcType=DECIMAL},
+      LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=DATE},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      SEX = #{record.sex,jdbcType=VARCHAR},
+      IS_DRIVER = #{record.isDriver,jdbcType=DECIMAL},
+      IS_INSTALL = #{record.isInstall,jdbcType=DECIMAL},
+      DRIVER_ID = #{record.driverId,jdbcType=DECIMAL},
+      MASTER_ID = #{record.masterId,jdbcType=VARCHAR},
+      DRIVER_NAME = #{record.driverName,jdbcType=VARCHAR},
+      MASTER_NAME = #{record.masterName,jdbcType=VARCHAR},
+      PLAT_FORM_ID = #{record.platFormId,jdbcType=DECIMAL},
+      PLAT_FORM_NAME = #{record.platFormName,jdbcType=VARCHAR},
+      IS_MODIFY_PWD = #{record.isModifyPwd,jdbcType=DECIMAL},
+      USER_TYPE = #{record.userType,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
