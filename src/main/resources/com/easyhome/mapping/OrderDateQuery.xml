@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.OrderDateQueryDao">
+    <resultMap type="com.easyhome.po.OrderDateQueryBean" id="orderDateQueryList">
+        <result property="id" column="fid" />
+        <result property="workNo" column="work_no" />
+        <result property="sendDate" column="send_date" />
+        <result property="amount" column="amount" />
+        <result property="orderSn" column="order_sn" />
+        <result property="itemCount" column="item_count" />
+        <result property="cusName" column="cus_name" />
+        <result property="cusPhone" column="cus_tel" />
+        <result property="cusAddress" column="cus_address" />
+        <result property="completeDate" column="complete_date " />
+        <result property="bookingTime" column="booking_time" />
+        <result property="statusDisplay" column="status_display" />
+        <result property="viewTime" column="view_time" />
+    </resultMap>
+
+    <!-- 按月查询已预约工单信息 -->
+    <select id="findWorkOrderListByMonth" parameterType="java.util.HashMap"  resultMap="orderDateQueryList">
+    <!-- select *
+      from (select tt.*, ROWNUM as rn
+              from ( -->
+              SELECT t.fid,
+                           t.work_no,
+                           to_char(t.send_date,'yyyy/mm/dd HH24:mi:ss') send_date,
+                           t.amount,
+                           t.order_sn,
+                           t.cus_name,
+                           t.cus_tel,
+                           t.cus_address,
+                           to_char(t.complete_date,'yyyy/mm/dd HH24:mi:ss')  completeDate,
+                         <!--   to_char(t.complete_date,'yyyy/mm/dd HH24:mi:ss') complete_date, -->
+                           to_char(t.booking_time,'yyyy/mm/dd') bookingTime,
+                           t.status_display,
+                           to_char( t.view_time,'yyyy/mm/dd HH24:mi:ss') viewTime,
+                           (select count(1)
+                              from tb_work_order_item i
+                             where i.work_order_id = t.fid) item_count
+                      FROM tb_work_order t
+                      WHERE
+                      <![CDATA[
+                          t.master_id=#{masterId}                   
+                      and t.status_display='待服务'
+                      and to_date(to_char(t.booking_time,'yyyy/mm/dd'),'yyyy/mm/dd')>=to_date(#{firstDay},'yyyy/mm/dd')
+                       and to_date(to_char(t.booking_time,'yyyy/mm/dd'),'yyyy/mm/dd')<=to_date(#{lastDay},'yyyy/mm/dd')
+                      ]]>                
+                     order by t.send_date desc
+                     <!-- ) tt
+             where <![CDATA[ROWNUM <= #{rowEnd}]]>) ttt
+     where <![CDATA[ttt.rn >= #{rowStart}]]> -->
+    </select>
+
+
+	<select id="find" resultType="int">
+		select count(1) from af_job
+	</select>
+    
+    
+</mapper>

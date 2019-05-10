@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.ReportMapper">
+
+	<!-- 工单服务状态报表查询条件 -->
+	<sql id="workOrderServiceStatusReportQueryWhere">
+		<where>
+			<if test="billDateStart!=null and billDateStart!=''">
+				and to_char(t.bill_date,'yyyy-mm-dd') >= #{billDateStart}
+			</if>
+			<if test="billDateEnd!=null and billDateEnd!=''">
+				<![CDATA[
+				and to_char(t.bill_date,'yyyy-mm-dd') <= #{billDateEnd}
+				]]>
+			</if>
+			<if test="sendDateStart!=null and sendDateStart!=''">
+				and to_char(t.send_date,'yyyy-mm-dd') >= #{sendDateStart}
+			</if>
+			<if test="sendDateEnd!=null and sendDateEnd!=''">
+				<![CDATA[
+				and to_char(t.send_date,'yyyy-mm-dd') <= #{sendDateEnd}
+				]]>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 放弃工单报表查询条件 -->
+	<sql id="workOrderQuitQueryWhere">
+		<where>
+			<if test="billDateStart!=null and billDateStart!=''">
+				and to_char(t.bill_date,'yyyy-mm-dd') >= #{billDateStart}
+			</if>
+			<if test="billDateEnd!=null and billDateEnd!=''">
+				<![CDATA[
+				and to_char(t.bill_date,'yyyy-mm-dd') <= #{billDateEnd}
+				]]>
+			</if>
+			<if test="sendDateStart!=null and sendDateStart!=''">
+				and to_char(t.send_date,'yyyy-mm-dd') >= #{sendDateStart}
+			</if>
+			<if test="sendDateEnd!=null and sendDateEnd!=''">
+				<![CDATA[
+				and to_char(t.send_date,'yyyy-mm-dd') <= #{sendDateEnd}
+				]]>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 工单服务状态报表 -->
+	<select id="workOrderServiceStatusReport" parameterType="com.easyhome.vo.WorkOrderServiceStatusReportQueryVo" resultType="com.easyhome.vo.WorkOrderServiceStatusReportModel">
+		with workOrder as (
+			select 
+		      t.fid,
+		      t.work_no workNo,
+		      t.order_id orderId,
+		      t.type type,
+		      (select sum(tod.product_quantity) from tb_order_detail tod where tod.order_id=t.order_id) productQuantity,
+		      t.status_display statusDisplay,
+		      (select tbo.dispatch_memo from tb_order tbo where tbo.fid=t.order_id) dispatchMemo,
+		      (select tbo.dispatch_sn from tb_order tbo where tbo.fid=t.order_id) dispatchSn,
+		      t.cus_name cusName,
+		      t.cus_address cusAddress,
+		      t.cus_tel cusTel,
+		      t.sender,
+		      t.master_name masterName,
+		      t.master_phone masterPhone,
+		      t.master_from masterFrom,
+		      t.out_order_sn outOrderSn,
+		      to_char(t.bill_date,'YYYY-MM-DD') billDate,
+		      to_char(t.bill_date,'HH24:MI:SS') billTime,
+		      to_char(t.send_date,'YYYY-MM-DD') sendDate,
+		      to_char(t.send_date,'HH24:MI:SS') sendTime,
+		      t.plat_form_name platFormName,
+		      to_char(t.sing_time,'YYYY-MM-DD') singDate,
+		      to_char(t.sing_time,'HH24:MI:SS') singTime,
+		      to_char(t.complete_date,'YYYY-MM-DD') completeDate,
+		      to_char(t.complete_date,'HH24:MI:SS') completeTime,
+		      t.customer_eval customerEval,
+		      to_char(t.view_time,'YYYY-MM-DD') viewDate,
+		      to_char(t.view_time,'HH24:MI:SS') viewTime,
+		      t.service_feedback serviceFeedback,
+		      t.memo2
+		    from 
+		      tb_work_order t
+			<include refid="workOrderQuitQueryWhere"/>
+		),
+		booking as
+		(
+		select tb.work_order_id,tb.create_time,tb.booking_time,tb.status,tb.status_display,tb.remark from 
+		(SELECT ROW_NUMBER() OVER(PARTITION BY t.work_order_id ORDER BY t.create_time DESC) rn,
+		t.work_order_id,t.create_time,t.booking_time,t.status,t.status_display,t.remark FROM tb_work_order_booking t 
+		<if test="billDateStart!=null and billDateStart!=''">
+			where to_char(t.create_time,'yyyy-mm-dd') >= #{billDateStart}
+		</if>
+		<if test="billDateStart==null || billDateStart==''">
+			where to_char(t.create_time,'yyyy-mm-dd') >= '2016-04-13'
+		</if>
+		) tb
+		where rn = 1)
+		
+		select 
+			wo.*,
+			b.status,
+			b.status_display bookingStatus,
+			b.remark remark,
+			to_char(b.create_time,'YYYY-MM-DD') bookingCreateDate,
+			to_char(b.create_time,'HH24:MI:SS') bookingCreateTime,
+			to_char(b.booking_time,'YYYY-MM-DD') bookingDate,
+		    to_char(b.booking_time,'HH24:MI:SS') bookingTime
+		from workOrder wo
+		left join booking b on wo.fid = b.work_order_id
+		where b.status=1
+		<if test="remark!=null and remark!=''">
+			and b.remark = #{remark}
+		</if>
+	</select>
+	
+	<!-- 放弃工单报表 -->
+	<select id="workOrderQuitReport" parameterType="com.easyhome.vo.WorkOrderServiceStatusReportQueryVo" resultType="com.easyhome.vo.WorkOrderQuitReportModel">
+		with quit as
+			(
+			select 
+			t.fid,
+			t.work_no workNo,
+			to_char(t.send_date,'YYYY-MM-DD') sendDate,
+			to_char(t.send_date,'HH24:MI:SS') sendTime,
+			t.sender sender,
+			t.plat_form_name platFormName,
+			t.cus_name cusName,
+			t.cus_address cusAddress,
+			t.cus_tel cusTel,
+			t.master_name masterName,
+			t.master_phone masterPhone,
+			t.status_display statusDisplay,
+			to_char(t.bill_date,'YYYY-MM-DD') billDate,
+			to_char(t.bill_date,'HH24:MI:SS') billTime,
+			t.out_order_sn outOrderSn,
+			t.memo2 memo2,
+			t.master_from masterFrom,
+			to_char(t.booking_time,'YYYY-MM-DD') bookingDate,
+			to_char(t.booking_time,'HH24:MI:SS') bookingTime
+			from tb_work_order t
+			<include refid="workOrderQuitQueryWhere"/>
+			),
+			
+			booking as
+			(
+			select tb.work_order_id,tb.create_time,tb.booking_time,tb.status,tb.status_display,tb.remark from 
+			(SELECT ROW_NUMBER() OVER(PARTITION BY t.work_order_id ORDER BY t.create_time DESC) rn,
+			t.work_order_id,t.create_time,t.booking_time,t.status,t.status_display,t.remark FROM tb_work_order_booking t 
+			<if test="billDateStart!=null and billDateStart!=''">
+				where to_char(t.create_time,'yyyy-mm-dd') >= #{billDateStart}
+			</if>
+			<if test="billDateStart==null || billDateStart==''">
+				where to_char(t.create_time,'yyyy-mm-dd') >= '2016-04-13'
+			</if>
+			) tb
+			where rn = 1),
+			
+			send_record as
+			(
+			select tm.work_order_id,tm.is_ok,tm.cancel_time,tm.reason from 
+			(SELECT ROW_NUMBER() OVER(PARTITION BY t.work_order_id ORDER BY t.send_time DESC) rn,
+			t.work_order_id,t.is_ok,t.cancel_time,t.reason FROM tb_work_order_master t
+			) tm
+			where rn = 1)
+			
+		select q.*,
+			to_char(b.create_time,'YYYY-MM-DD') bookingCreateDate,
+			to_char(b.create_time,'HH24:MI:SS') bookingCreateTime,
+			decode(sr.is_ok,'1','是','否') isQuit,
+			to_char(sr.cancel_time,'YYYY-MM-DD') quitDate,
+			to_char(sr.cancel_time,'HH24:MI:SS') quitTime,
+			sr.reason reason
+		from send_record sr
+		left join booking b on sr.work_order_id = b.work_order_id
+		left join quit q  on sr.work_order_id = q.fid
+		where q.fid is not null
+			and sr.is_ok = 1
+			<if test="remark!=null and remark!=''">
+				and sr.reason = #{remark}
+			</if>
+	</select>
+</mapper>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.TbReminderMapper" >
+  <resultMap id="BaseResultMap" type="com.easyhome.po.TbReminder" >
+    <id column="FID" property="fid" jdbcType="VARCHAR" />
+    <result column="WORK_NO" property="workNo" jdbcType="VARCHAR" />
+    <result column="MASTER_PHONE" property="masterPhone" jdbcType="VARCHAR" />
+    <result column="CUS_NAME" property="cusName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="REMINDER_TIME" property="reminderTime" jdbcType="DATE" />
+    <result column="BIZ_ID" property="bizId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    FID, WORK_NO, MASTER_PHONE, CUS_NAME, STATUS, REMINDER_TIME, BIZ_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.easyhome.po.TbReminderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from TB_REMINDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from TB_REMINDER
+    where FID = #{fid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from TB_REMINDER
+    where FID = #{fid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.easyhome.po.TbReminderExample" >
+    delete from TB_REMINDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.easyhome.po.TbReminder" >
+    insert into TB_REMINDER (FID, WORK_NO, MASTER_PHONE, 
+      CUS_NAME, STATUS, REMINDER_TIME, 
+      BIZ_ID)
+    values (#{fid,jdbcType=VARCHAR}, #{workNo,jdbcType=VARCHAR}, #{masterPhone,jdbcType=VARCHAR}, 
+      #{cusName,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL}, #{reminderTime}, 
+      #{bizId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.easyhome.po.TbReminder" >
+    insert into TB_REMINDER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        FID,
+      </if>
+      <if test="workNo != null" >
+        WORK_NO,
+      </if>
+      <if test="masterPhone != null" >
+        MASTER_PHONE,
+      </if>
+      <if test="cusName != null" >
+        CUS_NAME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="reminderTime != null" >
+        REMINDER_TIME,
+      </if>
+      <if test="bizId != null" >
+        BIZ_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=VARCHAR},
+      </if>
+      <if test="workNo != null" >
+        #{workNo,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPhone != null" >
+        #{masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="reminderTime != null" >
+        #{reminderTime},
+      </if>
+      <if test="bizId != null" >
+        #{bizId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.easyhome.po.TbReminderExample" resultType="java.lang.Integer" >
+    select count(*) from TB_REMINDER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update TB_REMINDER
+    <set >
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workNo != null" >
+        WORK_NO = #{record.workNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.masterPhone != null" >
+        MASTER_PHONE = #{record.masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cusName != null" >
+        CUS_NAME = #{record.cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reminderTime != null" >
+        REMINDER_TIME = #{record.reminderTime},
+      </if>
+      <if test="record.bizId != null" >
+        BIZ_ID = #{record.bizId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update TB_REMINDER
+    set FID = #{record.fid,jdbcType=VARCHAR},
+      WORK_NO = #{record.workNo,jdbcType=VARCHAR},
+      MASTER_PHONE = #{record.masterPhone,jdbcType=VARCHAR},
+      CUS_NAME = #{record.cusName,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      REMINDER_TIME = #{record.reminderTime},
+      BIZ_ID = #{record.bizId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.easyhome.po.TbReminder" >
+    update TB_REMINDER
+    <set >
+      <if test="workNo != null" >
+        WORK_NO = #{workNo,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPhone != null" >
+        MASTER_PHONE = #{masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        CUS_NAME = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="reminderTime != null" >
+        REMINDER_TIME = #{reminderTime},
+      </if>
+      <if test="bizId != null" >
+        BIZ_ID = #{bizId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FID = #{fid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.easyhome.po.TbReminder" >
+    update TB_REMINDER
+    set WORK_NO = #{workNo,jdbcType=VARCHAR},
+      MASTER_PHONE = #{masterPhone,jdbcType=VARCHAR},
+      CUS_NAME = #{cusName,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL},
+      REMINDER_TIME = #{reminderTime},
+      BIZ_ID = #{bizId,jdbcType=VARCHAR}
+    where FID = #{fid,jdbcType=VARCHAR}
+  </update>
+</mapper>

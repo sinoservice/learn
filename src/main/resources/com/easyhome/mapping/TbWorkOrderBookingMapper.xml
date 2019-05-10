@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.TbWorkOrderBookingMapper" >
+  <resultMap id="BaseResultMap" type="com.easyhome.po.TbWorkOrderBooking" >
+    <result column="FID" property="fid" jdbcType="VARCHAR" />
+    <result column="WORK_ORDER_ID" property="workOrderId" jdbcType="VARCHAR" />
+    <result column="BOOKING_TIME" property="bookingTime" jdbcType="DATE" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="LINK_MAN" property="linkMan" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="STATUS_DISPLAY" property="statusDisplay" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CALL_PHONE" property="callPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    FID, WORK_ORDER_ID, BOOKING_TIME, REMARK, LINK_MAN, ADDRESS, PHONE, STATUS, STATUS_DISPLAY, 
+    CREATE_TIME, CALL_PHONE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.easyhome.po.TbWorkOrderBookingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from TB_WORK_ORDER_BOOKING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.easyhome.po.TbWorkOrderBookingExample" >
+    delete from TB_WORK_ORDER_BOOKING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.easyhome.po.TbWorkOrderBooking" >
+    insert into TB_WORK_ORDER_BOOKING (FID, WORK_ORDER_ID, BOOKING_TIME, 
+      REMARK, LINK_MAN, ADDRESS, 
+      PHONE, STATUS, STATUS_DISPLAY, 
+      CREATE_TIME, CALL_PHONE)
+    values (#{fid,jdbcType=VARCHAR}, #{workOrderId,jdbcType=VARCHAR}, #{bookingTime}, 
+      #{remark,jdbcType=VARCHAR}, #{linkMan,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL}, #{statusDisplay,jdbcType=VARCHAR}, 
+      #{createTime}, #{callPhone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.easyhome.po.TbWorkOrderBooking" >
+    insert into TB_WORK_ORDER_BOOKING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        FID,
+      </if>
+      <if test="workOrderId != null" >
+        WORK_ORDER_ID,
+      </if>
+      <if test="bookingTime != null" >
+        BOOKING_TIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="linkMan != null" >
+        LINK_MAN,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="statusDisplay != null" >
+        STATUS_DISPLAY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="callPhone != null" >
+        CALL_PHONE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=VARCHAR},
+      </if>
+      <if test="workOrderId != null" >
+        #{workOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="bookingTime != null" >
+        #{bookingTime},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="linkMan != null" >
+        #{linkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="statusDisplay != null" >
+        #{statusDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="callPhone != null" >
+        #{callPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.easyhome.po.TbWorkOrderBookingExample" resultType="java.lang.Integer" >
+    select count(*) from TB_WORK_ORDER_BOOKING
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update TB_WORK_ORDER_BOOKING
+    <set >
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workOrderId != null" >
+        WORK_ORDER_ID = #{record.workOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookingTime != null" >
+        BOOKING_TIME = #{record.bookingTime,jdbcType=DATE},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkMan != null" >
+        LINK_MAN = #{record.linkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        ADDRESS = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        PHONE = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=DECIMAL},
+      </if>
+      <if test="record.statusDisplay != null" >
+        STATUS_DISPLAY = #{record.statusDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.callPhone != null" >
+        CALL_PHONE = #{record.callPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update TB_WORK_ORDER_BOOKING
+    set FID = #{record.fid,jdbcType=VARCHAR},
+      WORK_ORDER_ID = #{record.workOrderId,jdbcType=VARCHAR},
+      BOOKING_TIME = #{record.bookingTime,jdbcType=DATE},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      LINK_MAN = #{record.linkMan,jdbcType=VARCHAR},
+      ADDRESS = #{record.address,jdbcType=VARCHAR},
+      PHONE = #{record.phone,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=DECIMAL},
+      STATUS_DISPLAY = #{record.statusDisplay,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=DATE},
+      CALL_PHONE = #{record.callPhone,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

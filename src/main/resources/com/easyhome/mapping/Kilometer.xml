@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.KilometerDao" >
+	<resultMap id="BaseResultMap" type="com.easyhome.po.Kilometer" >
+    <result column="FID" property="fid"/>
+    <result column="driverNo" property="driver_no"/>
+    <result column="driverId" property="driver_id"/>
+    <result column="startKilometer" property="start_kilometer"/>
+    <result column="startUrl" property="start_url"/>
+    <result column="createTime" property="creat_time"/>
+    <result column="endKilometer" property="end_kilometer"/>
+    <result column="endUrl" property="end_url"/>
+    <result column="endTime" property="end_time"/>
+    </resultMap>
+    <!-- 添加运单公里信息 -->
+    <insert id="addStart">
+    	insert into tb_kilometer (fid,driver_no,driver_id,start_kilometer,start_url,creat_time)
+    			values (#{fdi},#{driverNo},#{driverId},#{startKilometer},#{startUrl},sysdate)
+    </insert>
+    <update id="addEnd">
+    	update tb_kilometer set end_kilometer=#{endKilometer},end_url=#{endUrl},end_time=sysdate where driver_no=#{driverNo}
+    </update>
+</mapper>

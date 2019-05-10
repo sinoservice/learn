@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.WorkOrderDao">
+	<resultMap type="com.easyhome.po.WorkOrder" id="workorder">
+		<result property="id" column="fid" />
+		<result property="workNo" column="work_no" />
+		<result property="sendDate" column="send_date" />
+		<result property="amount" column="amount" />
+		<result property="orderSn" column="order_sn" />
+		<result property="itemCount" column="item_count" />
+		<result property="cusName" column="cus_name" />
+		<result property="cusPhone" column="cus_tel" />
+		<result property="cusAddress" column="cus_address" />
+		<result property="completeDate" column="complete_date " />
+		<result property="bookingTime" column="booking_time" />
+		<result property="statusDisplay" column="status_display" />
+		<result property="viewTime" column="view_time" />
+	</resultMap>
+
+	<!-- 查询工单信息 -->
+	<select id="findWorkOrder"  resultMap="workorder">
+	select *
+	  from (select tt.*, ROWNUM as rn
+	          from (SELECT t.fid,
+	                       t.work_no,
+	                       t.send_date,
+	                       t.amount,
+	                       t.order_sn,
+	                       t.cus_name,
+	                       t.cus_tel,
+	                       t.cus_address,
+	                       t.complete_date,
+	                       t.booking_time,
+	                       t.status_display,
+	                       t.view_time,
+	                       (select count(1)
+	                          from tb_work_order_item i
+	                         where i.work_order_id = t.fid) item_count
+	                  FROM tb_work_order t
+	                  WHERE t.master_id=#{masterId,jdbcType=VARCHAR}
+	                  AND (t.work_no=#{workNoOrcusTel,jdbcType=VARCHAR} OR t.cus_tel=#{workNoOrcusTel,jdbcType=VARCHAR} OR t.cus_name LIKE concat(concat('%',#{workNoOrcusTel}),'%'))
+	                 order by t.send_date desc) tt
+	         where <![CDATA[ROWNUM <= #{rowEnd}]]>) ttt
+	 where <![CDATA[ttt.rn >= #{rowStart}]]>
+	</select>
+</mapper>

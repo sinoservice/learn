@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.SmsDao">
+	<resultMap id="sms" type="com.easyhome.po.Sms">
+		<result property="fid" column="fid" />
+		<result property="phone" column="phone" />
+		<result property="content" column="content" />
+		<result property="sendTime" column="send_time" />
+		<result property="sendCode" column="send_code" />
+	</resultMap>
+
+	<select id="getSmsById" resultMap="sms">
+		select
+		    t.fid,t.phone,t.content,t.send_time,t.send_code 
+		from tb_sms t 
+		where t.fid=#{fid}
+	</select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.AppraiseDao">
+
+	<resultMap type="com.easyhome.po.Appraise" id="appraise">
+		<result property="workorderid" column="work_order_id" />
+		<result property="address" column="address" />
+		<result property="time" column="time" />
+	</resultMap>
+	<resultMap type="com.easyhome.po.AppraiseMessage" id="appraiseMessage">
+		<result property="workorderid" column="fid" />
+		<result property="evalServiceComplete" column="eval_service_complete" />
+		<result property="evalDelivery" column="eval_delivery" />
+		<result property="evalInstall" column="eval_install" />
+		<result property="evalPhoneBack" column="eval_phone_back" />
+	</resultMap>
+	<insert id="save">
+		INSERT INTO
+		tb_work_order_ext(work_order_id,address,time)
+		VALUES
+		(#{appraise.workorderid},#{appraise.address},#{appraise.time})
+	</insert>
+	<update id="updateAppraise">
+		UPDATE tb_work_order SET
+		eval_service_complete=#{appraiseMessage.evalServiceComplete},
+		eval_delivery=#{appraiseMessage.evalDelivery},eval_install=#{appraiseMessage.evalInstall},eval_phone_back=#{appraiseMessage.evalPhoneBack}
+		WHERE fid=#{appraiseMessage.workorderid}
+	</update>
+	<select id="findAppraise" resultMap="appraise">
+		SELECT work_order_id,address,time FROM
+		tb_work_order_ext WHERE work_order_id=#{workorderid}
+	</select>
+	<select id="findAppraiseMessage" resultMap="appraiseMessage">
+		SELECT
+		fid,eval_service_complete,eval_delivery,eval_install,eval_phone_back FROM
+		tb_work_order
+		WHERE fid=#{workorderid}
+	</select>
+</mapper>

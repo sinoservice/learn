@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyhome.dao.AppMessageDao">
+	<resultMap type="com.easyhome.po.AppMessage" id="app">
+		<result property="appVersion" column="app_version"/>
+		<result property="model" column="model"/>
+		<result property="androidVersion" column="android_version"/>
+		<result property="masterId" column="master_id"/>
+		<result property="phone" column="phone"/>
+	</resultMap>
+	<resultMap type="com.easyhome.po.Version" id="version">
+		<result property="appVersion" column="app_version"/>
+		<result property="flag" column="flag"/>
+	</resultMap>
+	<resultMap type="com.easyhome.po.AppPushMessage" id="push">
+		<result property="fid" column="fid"/>
+		<result property="title" column="title"/>
+		<result property="sendTime" column="send_time"/>
+		<result property="userId" column="user_id"/>
+		<result property="isRead" column="is_rread"/>
+		<result property="htmlContent" column="html_content"/>
+	
+	
+	</resultMap>
+	<!-- 查询app版本信息 -->
+	<select id="findById" resultMap="app">
+		SELECT * FROM tb_app_version WHERE master_id=#{masterId}
+	</select>
+	<!-- 根据技师id更新app版本信息 -->
+	<update id="updateById">
+		UPDATE tb_app_version SET app_version=#{appVersion},model=#{model},android_version=#{androidVersion},phone=#{phone} 
+		WHERE master_id=#{masterId}
+	</update>
+	<!-- 添加手机版本信息 -->
+	<insert id="addVersion">
+		INSERT INTO tb_app_version VALUES (#{appVersion},#{model},#{androidVersion},#{masterId},phone=#{phone})
+	</insert>
+	<!--查询APP版本信息  -->
+	<select id="findVersion" resultMap="version">
+		SELECT * FROM tb_update_app_version WHERE flag=#{flag}
+	</select>
+	<!-- 查询灰度发布手机号 -->
+	<select id="findPhone" resultType="String">
+		SELECT phone FROM gray_release_user
+	</select>
+	<!-- 查询未读消息 -->
+	<select id="findUnread" resultMap="push">
+	 <![CDATA[
+		SELECT * FROM(
+		SELECT g.*,ROWNUM rn FROM (
+		SELECT fid,title,to_char(send_time,'yyyy-mm-dd hh24:mi:ss') send_time,user_id,is_rread,html_content FROM tb_message 
+		WHERE user_id=#{userId} and is_rread=0 order by send_time DESC) g  WHERE ROWNUM <= #{rowEnd}) gg WHERE gg.rn >=#{rowStart}
+		 ]]>
+	</select>
+	<!-- 查询已读消息 -->
+	<select id="findRead" resultMap="push">
+	 <![CDATA[
+		SELECT * FROM(
+		SELECT g.*,ROWNUM rn FROM (
+		SELECT fid,title,to_char(send_time,'yyyy-mm-dd hh24:mi:ss') send_time,user_id,is_rread,html_content FROM tb_message 
+		WHERE user_id=#{userId} and is_rread=1 order by send_time DESC) g  WHERE ROWNUM <= #{rowEnd}) gg WHERE gg.rn >=#{rowStart}
+		 ]]>
+	</select>
+	<!-- 查询全部消息 -->
+	<select id="findAll" resultMap="push">
+	 <![CDATA[
+		SELECT * FROM(
+		SELECT g.*,ROWNUM rn FROM (
+		SELECT fid,title,to_char(send_time,'yyyy-mm-dd hh24:mi:ss') send_time,user_id,is_rread,html_content FROM tb_message 
+		WHERE user_id=#{userId} order by send_time DESC) g  WHERE ROWNUM <= #{rowEnd}) gg WHERE gg.rn >=#{rowStart}
+		 ]]>
+	</select>
+</mapper>

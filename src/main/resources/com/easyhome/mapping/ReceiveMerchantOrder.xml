@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyhome.dao.mb.ReceiveMerchantOrderDao">
+<!-- 美标电视购物订单接入 -->
+   <insert id="insertMerchantOrderDao" parameterType="com.easyhome.po.mb.ReceiveMerchantOrderBean">
+        INSERT INTO THIRD_PARTY_MERCHANT(
+            id,
+            business_key,
+            merchant_type,
+            text_content,
+            operate_status, 
+            create_time,
+            creator,
+            modify_time,     
+            yn
+        )
+        VALUES(
+        THIRD_PARTY_MERCHANT_SEQUENCE.nextval,
+        #{businessKey},
+        #{merchantType},
+        #{textContent},
+        1,  
+        sysdate,
+        #{creator},
+        sysdate,
+        0
+        )
+   </insert>
+   
+   <!-- 跟新报文信息 -->
+   <update id="updateMerchantOrderDao">
+           update  THIRD_PARTY_MERCHANT
+           set  
+           operate_status =#{operateStatus}, 
+           <!-- <if test="textContent !=null and !=''"></if> -->
+         <!--  text_content =#{textContent}, -->
+           modify_time=sysdate,
+           modifier =#{modifier}
+           <!-- yn =#{yn} -->
+           where id=#{id}
+   </update>
+   
+   <resultMap type="com.easyhome.po.mb.ReceiveMerchantOrderBean" id="selectMerchantOrderMap">
+         <id column="id" property="id" />
+        <result column="business_key" property="businessKey"/>
+        <result column="merchant_type" property="merchantType"/>
+        <result column="text_content" property="textContent"/>
+        <result column="operate_status" property="operateStatus"/>
+        <result column="createtime" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="modifytime" property="modifyTime"/>
+        <result column="modifier" property="modifier"/>
+        <result column="yn" property="yn"/> 
+   </resultMap>
+   
+  <select id="selectMerchantOrder" resultMap="selectMerchantOrderMap">
+    select
+    id,
+     business_key,
+     merchant_type,
+     text_content,
+     operate_status,
+     to_char(create_time,'yyyy-MM-dd HH24:mi:ss') createtime, 
+     creator,
+     to_char(modify_time,'yyyy-MM-dd HH24:mi:ss') modifytime, 
+     modifier,
+     yn
+    from
+     THIRD_PARTY_MERCHANT
+<!--     where business_key =#{businessKey} -->
+     <where>
+       <if test="businessKey!=null and businessKey!=''">
+         business_key =#{businessKey}
+       </if>
+       and operate_status in (1,4)
+     </where>
+  </select>   
+</mapper>
