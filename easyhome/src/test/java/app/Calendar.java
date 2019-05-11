@@ -15,7 +15,7 @@ import com.easyhome.utils.MonthDivide;
 public class Calendar {
 	@Test
 	public void test() throws ParseException{
-		 String date = "2013-09";
+		 String date = "2013-09";//修改测试
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 		System.out.println(dateFormat);
 		Date date1 = dateFormat.parse(date);
